@@ -83,6 +83,16 @@ app.post("/gmail-events", async (req, res) => {
   }
 });
 
+app.post("/setup-watch", async (req, res) => {
+  try {
+    await setupWatchForAllUsers();
+    res.status(200).send("Watch setup for all users");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error setting up watch");
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
