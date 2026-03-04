@@ -62,7 +62,32 @@ app.post("/gmail-events", async (req, res) => {
 
       const snippet = full.data.snippet || "";
 
-      const isSpam = snippet.toLowerCase().includes("lottery");
+      const spamKeywords = [
+        "lottery",
+        "winner",
+        "free money",
+        "claim prize",
+        "congratulations",
+        "urgent response",
+        "click here",
+        "limited offer",
+        "investment opportunity",
+        "bitcoin giveaway",
+        "prize money",
+        "act now",
+        "guaranteed income",
+        "you have won"
+      ];
+
+      const text = snippet.toLowerCase();
+      let isSpam = false;
+
+      for (let i = 0; i < spamKeywords.length; i++) {
+        if (text.includes(spamKeywords[i])) {
+          isSpam = true;
+          break;
+        }
+      }
 
       if (isSpam) {
         await gmail.users.messages.modify({
